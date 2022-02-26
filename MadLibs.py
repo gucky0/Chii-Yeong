@@ -34,54 +34,23 @@ this is a (adjective) (noun).
 this is a    green      car.
 
 Other Resources:
-Creating a menu window
+Creating a menu window /
 https://data-flair.training/blogs/python-mad-libs-generator-game/#:~:text=Mad%20libs%20generator%20is%20a,stories%20after%20filling%20the%20blanks.
-Replace method
+Replace method /
 https://www.teachwithict.com/mad_libs.html
-Look for indicators instead of multiple inputs
+Look for indicators instead of multiple inputs /
 http://anh.cs.luc.edu/handsonPythonTutorial/madlib2.html
 Other ideas:
-- different stories (random)
-- save answers into a profile (txt)
+- different stories (random) /
+- save answers into a profile (txt) / 
 - grammer (if)
+- random word inputs (random)
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def examples():
     noun = input("Noun: ")
     noun2 = input("Noun: ")
     adj = input("Adjective: ")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def madlib(default=True):
     if default == True:
@@ -126,31 +95,6 @@ def madlib(default=True):
         action6 =           input("Enter an action: ")
         explitive =         input("Enter an explitive: ")
         holiday =           input("Enter a holiday: ")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     print(f"I feel so {feeling1}. \
 I was {action1} \
 this morning and I was fantasizing about \
@@ -174,8 +118,183 @@ me. \n{explitive}! \
 I want you. I want you so bad. So anyway, give me a call back. I \
 would love to have a {holiday} \
 date very very soon. :)")
+    
+def madlib1():
+    animals= input('enter a animal name : ')
+    profession = input('enter a profession name: ')
+    cloth = input('enter a piece of cloth name: ')
+    things = input('enter a thing name: ')
+    name= input('enter a name: ')
+    place = input('enter a place name: ')
+    verb = input('enter a verb in ing form: ')
+    food = input('food name: ')
+    print('say ' + food + ', the photographer said as the camera flashed! ' + name + ' and I had gone to ' + place +' to get our photos taken on my birthday. The first photo we really wanted was a picture of us dressed as ' + animals + ' pretending to be a ' + profession + '. when we saw the second photo, it was exactly what I wanted. We both looked like ' + things + ' wearing ' + cloth + ' and ' + verb + ' --exactly what I had in mind')
+def madlib2():
+    person = input('enter person name: ')
+    color = input('enter color : ')
+    foods = input('enter food name : ')
+    adjective = input('enter aa adjective name: ')
+    thing = input('enter a thing name : ')
+    place = input('enter place : ')
+    verb = input('enter verb : ')
+    adverb = input('enter adverb : ')
+    food = input('enter food name: ')
+    things = input('enter a thing name : ')  
+    print('Today we picked apple from '+person+ "'s Orchard. I had no idea there were so many different varieties of apples. I ate " +color+ ' apples straight off the tree that tested like '+foods+ '. Then there was a '+adjective+ ' apple that looked like a ' + thing + '.When our bag were full, we went on a free hay ride to '+place+ ' and back. It ended at a hay pile where we got to ' +verb+ ' ' +adverb+ '. I can hardly wait to get home and cook with the apples. We are going to make appple '+food+ ' and '+things+' pies!.')  
+def madlib3():
+    adjactive = input('enter adjective : ')
+    color = input('enter a color name : ')
+    thing = input('enter a thing name :')
+    place = input('enter a place name : ')
+    person= input('enter a person name : ')
+    adjactive1 = input('enter a adjactive : ')
+    insect= input('enter a insect name : ')
+    food = input('enter a food name : ')
+    verb = input('enter a verb name : ')
+    print('Last night I dreamed I was a ' +adjactive+ ' butterfly with ' + color+ ' splocthes that looked like '+thing+ ' .I flew to ' + place+ ' with my bestfriend and '+person+ ' who was a '+adjactive1+ ' ' +insect +' .We ate some ' +food+ ' when we got there and then decided to '+verb+ ' and the dream ended when I said-- lets ' +verb+ '.')
+
+def madlib_tk():
+    from tkinter import Tk, Label, Button
+    WIDTH = HEIGHT = 300
+    FONT = 'arial 15'
+    COLOR = 'ghost white'
+
+    # boilerplate / template
+    screen = Tk()
+    screen.geometry(str(WIDTH)+'x'+str(HEIGHT))
+    screen.title('Mad Libs Game')
+    Label(screen, text= 'Mad Libs\n Have Fun!' , font = 'arial 20 bold').pack()
+    Label(screen, text = 'Click Any One :', font = f'{FONT} bold').place(x=40, y=80)
+    Button(screen,
+           text=    'The Photographer',
+           font=    FONT,
+           command= madlib1,
+           bg =     COLOR)\
+           .place(x=60, y=120)
+    Button(screen,
+           text=    'apple and apple',
+           font=    FONT,
+           command= madlib2 ,
+           bg =     COLOR)\
+           .place(x=70, y=180)
+    Button(screen,
+           text=    'The Butterfly',
+           font=    FONT,
+           command= madlib3,
+           bg =     COLOR)\
+           .place(x=80, y=240)
+    screen.mainloop()
+
+def madlib_replace(choice = 0):
+    import random, re
+    
+    with open('story.txt','r') as f:
+        texts = f.readlines()    
+        #print(texts)
+
+    if choice != None:
+        text = texts[choice]
+    else:
+        text = random.choice(texts)
+    new_text = text
+    
+    words = []
+    start_index = new_text.find('<')+1
+    while start_index != 0:
+        end_index = new_text.find('>')
+        
+        word = new_text[start_index:end_index]
+        new_word = input(f'enter a {word:<9} : ')
+        words.append(new_word)
+        new_text = new_text[:start_index - 1] + new_word + new_text[end_index + 1:]
+
+        start_index = new_text.find('<')+1
+    print(new_text)
+    return words
+
+def matlib_save():
+    import json
+
+    with open('words.json') as infile:
+        data = json.load(infile)
+        
+    #data = {}
+    username = input('enter your name: ')
+    data[username] = madlib_replace(choice = 0)
+    with open('words.json', 'w') as outfile:
+        json.dump(data, outfile, indent=4, sort_keys=True)
+
+    with open('words.json') as infile:
+        data = json.load(infile)
+        print(data)
+    
+
+def matlib_load(username, choice=0):
+    from itertools import cycle
+    import json
+
+    with open('story.txt','r') as f:
+        texts = f.readlines()    
+        #print(texts)
+
+    if choice != None:
+        text = texts[choice]
+    else:
+        text = random.choice(texts)
+    new_text = text
+    
+    with open('words.json') as infile:
+        data = json.load(infile)
+
+    words = data[username]
+    words_cycle = cycle(words)
+
+    start_index = new_text.find('<')+1
+    while start_index != 0:
+        end_index = new_text.find('>')
+        
+        word = new_text[start_index:end_index]
+
+        #changes made here
+        new_word = next(words_cycle)
+
+        new_text = new_text[:start_index - 1] + new_word + new_text[end_index + 1:]
+
+        start_index = new_text.find('<')+1
+    print(new_text)
 
 
+
+
+
+
+
+
+
+    
+
+'''
+moody
+running
+happy
+eat
+cry
+write
+pajama
+hair
+pant
+hand
+shoulder
+type
+sharp
+ramen
+burger
+drink
+happiest
+sleep
+cibai
+national day
+'''
 
 
 
