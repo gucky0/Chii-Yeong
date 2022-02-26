@@ -4,11 +4,12 @@ Mad Libs
 to substitute for blanks in a story
 
 Program Flow:
+0) take/make a paragraph for your story
 1) ask user for all the words needed -using input()
 2) display story to user - using print and f-string
 3) default story -using if statement
 
-Noun: object, person, animeal, place
+Noun: object, person, animal, place
 Example words:
 - man
 - home
@@ -27,7 +28,6 @@ Verb: action
 - dance
 - slide
 - go
-
 
 Example Sentences
 this is a (adjective) (noun).
@@ -118,7 +118,7 @@ def madlib(default=True):
         bodyPart2 =         input("Enter a body part: ")
         bodyPart3 =         input("Enter a body part: ")
         action4 =           input("Enter an action: ")
-        adjective1 =        input("Enter an adjective (w/o -ing: ")
+        adjective1 =        input("Enter an adjective (w/o -ing): ")
         food1 =             input("Enter a type of food: ")
         food2 =             input("Enter a type of food: ")
         action5 =           input("Enter an action: ")
