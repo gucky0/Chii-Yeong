@@ -3,6 +3,11 @@ Mad Libs
 - a word game where one player prompts another for a list of words
 to substitute for blanks in a story
 
+Program Flow:
+1) ask user for all the words needed -using input()
+2) display story to user - using print and f-string
+3) default story -using if statement
+
 Noun: object, person, animeal, place
 Example words:
 - man
@@ -41,10 +46,42 @@ Other ideas:
 - grammer (if)
 """
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def examples():
     noun = input("Noun: ")
     noun2 = input("Noun: ")
     adj = input("Adjective: ")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def madlib(default=True):
     if default == True:
@@ -54,18 +91,18 @@ def madlib(default=True):
         action2 =           "cuddle"
         action_or_feeling = "squeal"
         action3 =           "snuggle"
-        noun =              "apron"
+        outfit1 =           "apron"
         bodyPart1 =         "hands"
-        bodyPart2 =         "pants"
-        bodyPart3 =         "tongue"
-        bodyPart4 =         "ear"
+        outfit2 =           "pants"
+        bodyPart2 =         "tongue"
+        bodyPart3 =         "ear"
         action4 =           "moan"
         adjective1 =        "sloppy"
         food1 =             "banana"
         food2 =             "lollipop"
         action5 =           "swallow"
         adjective2 =        "darkest"
-        verb =              "let"
+        action6 =           "let"
         explitive =         "Fxck"
         holiday =           "Valentine's"
     else:
@@ -89,6 +126,31 @@ def madlib(default=True):
         action6 =           input("Enter an action: ")
         explitive =         input("Enter an explitive: ")
         holiday =           input("Enter a holiday: ")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     print(f"I feel so {feeling1}. \
 I was {action1} \
 this morning and I was fantasizing about \
@@ -96,7 +158,7 @@ how I would {feeling2} \
 it if you would {action2} \
 me; that would realy make me {action_or_feeling} \
 and I would want to {action3} \
-all night long. \nWhat I would really want is to see you with a/an {outfit}. \
+all night long. \nWhat I would really want is to see you with a/an {outfit1}. \
 What it would do to me when I put my {bodyPart1} \
 on your {outfit2}, \
 my {bodyPart2} \
@@ -107,7 +169,7 @@ kissing. \nI was wondering about your {food1}. \
 Do you want me to lick it like a/an {food2}? \
 I would love to {action5} \
 you. I want to explore your most {adjective2} \
-fantasy. If you would {verb} \
+fantasy. If you would {action6} \
 me. \n{explitive}! \
 I want you. I want you so bad. So anyway, give me a call back. I \
 would love to have a {holiday} \
