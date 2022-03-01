@@ -44,7 +44,7 @@ Other ideas:
 - different stories (random) /
 - save answers into a profile (txt) / 
 - grammer (if)
-- random word inputs (random)
+- random word inputs (random) /
 """
 
 def examples():
@@ -153,150 +153,211 @@ def madlib3():
     verb = input('enter a verb name : ')
     print('Last night I dreamed I was a ' +adjactive+ ' butterfly with ' + color+ ' splocthes that looked like '+thing+ ' .I flew to ' + place+ ' with my bestfriend and '+person+ ' who was a '+adjactive1+ ' ' +insect +' .We ate some ' +food+ ' when we got there and then decided to '+verb+ ' and the dream ended when I said-- lets ' +verb+ '.')
 
-def madlib_tk():
+
+#_________________________________________________________________________________________________________________________________________________________________#
+
+
+
+
+
+
+
+
+def read(choice=0):
+    with open('story.txt','r') as f:
+        texts = f.readlines()
+        num = len(texts)
+
+    if choice >= num:
+        import random
+        text = random.choice(texts)      
+    else:
+        text = texts[choice]
+    
+    new_text = text
+    return new_text, text
+
+
+
+
+
+
+
+def matlib_update(new_text, io='load'):
+    if io == 'user':
+        words = []
+    if io == 'load':
+        from itertools import cycle
+        import json
+        with open('words.json') as infile:
+            data = json.load(infile)
+        username = input('username: ')
+        words = data[username]
+        words_cycle = cycle(words)
+
+    start_index = new_text.find('<')+1
+    while start_index != 0:
+        end_index = new_text.find('>')
+        word = new_text[start_index:end_index]
+        
+        #changes made here
+        if io == 'user':
+            new_word = input(f'enter a {word:<9} : ')
+        if io == 'load':
+            new_word = next(words_cycle)
+
+        words.append(new_word)
+        new_text = new_text[:start_index - 1] + new_word + new_text[end_index + 1:]
+        start_index = new_text.find('<')+1
+    return new_text, words
+
+
+
+
+
+def matlib_save(words, save = False): #change to without playing game
+    if save == False:
+        return
+    
+    import json
+    filename = 'words.json'
+
+    with open(filename, 'r') as infile:
+        data = json.load(infile)
+        
+    #data = {}
+    username = input('enter your name: ')
+    data[username] = words
+    
+    with open(filename, 'w') as outfile:
+        json.dump(data, outfile, indent=4, sort_keys=True)
+
+    with open(filename, 'r') as infile:
+        data = json.load(infile)
+
+
+
+
+
+def mad_grammar(new_text):
+    split_text = new_text.split()
+    for index, word in enumerate( split_text ):
+        if word in ('a','an'):
+            next_word = split_text[index+1]
+            if next_word[0] in list('aeiou'):
+                split_text[index] = 'an'
+            else:
+                split_text[index] = 'a'
+    new_text = ' '.join(split_text)
+    return new_text
+
+
+
+#_________________________________________________________________________________________________________________________________________________________________#
+
+
+
+
+def madlib_function(choice = 0, io = 'load', save = False):
+    
+    new_text, text = read(choice)
+    new_text, words = matlib_update(new_text, io)
+    new_text = mad_grammar(new_text)
+    matlib_save(words, save)
+    
+    print(new_text)
+
+
+
+
+
+def madlib_tk(functions=2):
     from tkinter import Tk, Label, Button
     WIDTH = HEIGHT = 300
     FONT = 'arial 15'
     COLOR = 'ghost white'
-
     # boilerplate / template
     screen = Tk()
     screen.geometry(str(WIDTH)+'x'+str(HEIGHT))
     screen.title('Mad Libs Game')
     Label(screen, text= 'Mad Libs\n Have Fun!' , font = 'arial 20 bold').pack()
     Label(screen, text = 'Click Any One :', font = f'{FONT} bold').place(x=40, y=80)
+    for index in range(functions):
+        Button(screen,
+               text=    f'Game {index}',
+               font=    FONT,
+               command= lambda: madlib_function(choice=index, io='user', save=True),
+               bg =     COLOR)\
+               .place(x=60, y=120 + index*60)
     Button(screen,
-           text=    'The Photographer',
+           text=    'Random',
            font=    FONT,
-           command= madlib1,
+           command= lambda: madlib_function(choice=functions, io='user', save=True),
            bg =     COLOR)\
-           .place(x=60, y=120)
+           .place(x=60, y=120 + index*60 +60)
     Button(screen,
-           text=    'apple and apple',
+           text=    'Default',
            font=    FONT,
-           command= madlib2 ,
+           command= madlib_function,
            bg =     COLOR)\
-           .place(x=70, y=180)
-    Button(screen,
-           text=    'The Butterfly',
-           font=    FONT,
-           command= madlib3,
-           bg =     COLOR)\
-           .place(x=80, y=240)
-    screen.mainloop()
+           .place(x=60, y=120 + index*60 +120)
 
-def madlib_replace(choice = 0):
-    import random, re
-    
-    with open('story.txt','r') as f:
-        texts = f.readlines()    
-        #print(texts)
 
-    if choice != None:
-        text = texts[choice]
-    else:
-        text = random.choice(texts)
-    new_text = text
+
+
+
+
+
+
+def word_list():
+    import pandas as pd
+    import random
+
+    class data():
+        def __init__(self, website, method=1):
+            self.website = website
+            tables = pd.read_html(website)
+            if method == 1:            
+                self.df = tables[3].iloc[:,[1,2]]
+                self.df.columns = ['word','frequency']
+                self.word_list = self.df['word'].values.tolist()
+            elif method == 2:
+                self.df = tables[0].iloc[:,[1,3]]
+                self.word_list = pd.concat([tables[0].iloc[:,1], tables[0].iloc[:,3]]).values.tolist()
+        def get_word(self, n=1):
+            self.word = random.choice(self.word_list)
+##            word = verb_list.sample(n=3)
+
+    noun = data("https://www.talkenglish.com/vocabulary/top-1500-nouns.aspx")
+    adjective = data("https://www.talkenglish.com/vocabulary/top-500-adjectives.aspx")
+    verb = data("https://www.talkenglish.com/vocabulary/top-1000-verbs.aspx")
+    person = data("https://www.ssa.gov/oact/babynames/decades/century.html",2)
+
+    new_text, text = read(choice)
     
-    words = []
     start_index = new_text.find('<')+1
     while start_index != 0:
         end_index = new_text.find('>')
-        
-        word = new_text[start_index:end_index]
-        new_word = input(f'enter a {word:<9} : ')
-        words.append(new_word)
-        new_text = new_text[:start_index - 1] + new_word + new_text[end_index + 1:]
-
-        start_index = new_text.find('<')+1
-    print(new_text)
-    return words
-
-def matlib_save():
-    import json
-
-    with open('words.json') as infile:
-        data = json.load(infile)
-        
-    #data = {}
-    username = input('enter your name: ')
-    data[username] = madlib_replace(choice = 0)
-    with open('words.json', 'w') as outfile:
-        json.dump(data, outfile, indent=4, sort_keys=True)
-
-    with open('words.json') as infile:
-        data = json.load(infile)
-        print(data)
-    
-
-def matlib_load(username, choice=0):
-    from itertools import cycle
-    import json
-
-    with open('story.txt','r') as f:
-        texts = f.readlines()    
-        #print(texts)
-
-    if choice != None:
-        text = texts[choice]
-    else:
-        text = random.choice(texts)
-    new_text = text
-    
-    with open('words.json') as infile:
-        data = json.load(infile)
-
-    words = data[username]
-    words_cycle = cycle(words)
-
-    start_index = new_text.find('<')+1
-    while start_index != 0:
-        end_index = new_text.find('>')
-        
         word = new_text[start_index:end_index]
 
         #changes made here
-        new_word = next(words_cycle)
-
+        class_name = locals()[word]
+        class_name.get_word()
+        new_word = class_name.word
+        
         new_text = new_text[:start_index - 1] + new_word + new_text[end_index + 1:]
-
         start_index = new_text.find('<')+1
+
+        
+    new_text = mad_grammer(new_text)
+    matlib_save(words, True)
+    
     print(new_text)
-
-
-
-
-
-
-
 
 
     
 
-'''
-moody
-running
-happy
-eat
-cry
-write
-pajama
-hair
-pant
-hand
-shoulder
-type
-sharp
-ramen
-burger
-drink
-happiest
-sleep
-cibai
-national day
-'''
-
-
+  
 
 
 
