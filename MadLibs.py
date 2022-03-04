@@ -43,7 +43,7 @@ http://anh.cs.luc.edu/handsonPythonTutorial/madlib2.html
 Other ideas:
 - different stories (random) /
 - save answers into a profile (txt) / 
-- grammer (if)
+- grammar (if) /
 - random word inputs (random) /
 """
 
@@ -333,7 +333,7 @@ def word_list():
     verb = data("https://www.talkenglish.com/vocabulary/top-1000-verbs.aspx")
     person = data("https://www.ssa.gov/oact/babynames/decades/century.html",2)
 
-    new_text, text = read(choice)
+    new_text, text = read(choice=0)
     
     start_index = new_text.find('<')+1
     while start_index != 0:
@@ -349,8 +349,8 @@ def word_list():
         start_index = new_text.find('<')+1
 
         
-    new_text = mad_grammer(new_text)
-    matlib_save(words, True)
+    new_text = mad_grammar(new_text)
+    #matlib_save(words, True)
     
     print(new_text)
 
