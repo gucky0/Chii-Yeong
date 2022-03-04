@@ -8,14 +8,14 @@
     ##if correct, let him play
     ##if wrong, kick him out
 ##
-##select game mode (topics)
-##load the game
-##play
-##number of lives
-##if run out, u die
-##can retry or exit game
+##select game mode (topics) /
+##load the game /
+##play /
+##number of lives /
+##if run out, u die /
+##can retry or exit game /
 ##
-##if u win, can share on socials
+##can share on socials /
 ##unlock new modes
 
 
@@ -81,15 +81,79 @@ def login(user=None, tries=2):
         print(users)
         print(correct_password)
 
-login()
+def lives_qn():
+    lives = 3
+    questions = ["How old am I? ",
+                 "What is my gender? ",
+                 "What is my favorite waifu? "]
+
+    answers   = ["26",
+                 "Male",
+                 "Ram" ]
+
+    score = 0
+    guesses = []
+
+    for index,question in enumerate(questions):
+        while lives:
+            guess = input(question)
+            guesses.append(guess)
+            
+            if guess.lower() == answers[index].lower(): #slicing [index]
+                score += 1 # score = score + 1 aka increment
+                print("Correct!\n")
+                break # for while-loop
+            else:
+                lives -= 1 # lives = lives - 1
+                print("Wrong!",lives,"lives left.\n")
+                
+        if lives == 0:
+            print("You are not a true friend! :(")
+            break # for the for-loop
+            
+    print("You scored:", score,"/",len(questions))
+    matlib_save(guesses,save=True)
+    retry=input("Do you want to retry? ")
+    if retry.lower() == "yes":
+        print()
+        mode()
+    else:
+        quit()
+
+
+def matlib_save(guesses, save = False): #change to without playing game
+    if save == False:
+        return
+    
+    import json
+    filename = 'answers.json'
+
+    with open(filename, 'r') as infile:
+        data = json.load(infile)
+        
+##    data = {}
+    username = input('enter your name: ')
+    data[username] = guesses
+    
+    with open(filename, 'w') as outfile:
+        json.dump(data, outfile, indent=4, sort_keys=True)
+
+    with open(filename, 'r') as infile:
+        data = json.load(infile)
+        
 
 #rest of game
+def mode():
+    topic=input("choose a topic: ")
+    if topic=="biography":
+        lives_qn()
+    else:
+        print("Topic doesn't exist. \n")
+        mode()
 
 
 
-
-
-
+mode()
 
 
 
